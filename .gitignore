@@ -1,0 +1,25 @@
+# Segredos - NUNCA versionar
+.env
+
+# Saidas geradas
+relatorios/*.pdf
+*.png
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Testes
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editores e sistema operacional
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
