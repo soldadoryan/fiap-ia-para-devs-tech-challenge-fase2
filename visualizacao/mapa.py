@@ -105,16 +105,16 @@ def draw_legend(screen: pygame.Surface, items: List[Tuple[str, Tuple[int, int, i
     line_height = font_size + 6
     padding = 6
 
-    labels = [my_font.render(label, True, (0, 0, 0)) for label, _ in items]
+    labels = [my_font.render(label, True, (255, 255, 255)) for label, _ in items]
     box_width = padding * 2 + 2 * node_radius + 8 + max(l.get_width() for l in labels)
     box_height = padding * 2 + line_height * len(items)
 
     x, y = position
     background = pygame.Surface((box_width, box_height))
-    background.fill((255, 255, 255))
+    background.fill((0, 0, 0))
     background.set_alpha(220)
     screen.blit(background, (x, y))
-    pygame.draw.rect(screen, (0, 0, 0), (x, y, box_width, box_height), 1)
+    pygame.draw.rect(screen, (255, 255, 255), (x, y, box_width, box_height), 1)
 
     for index, ((_, rgb_color), label_surface) in enumerate(zip(items, labels)):
         line_y = y + padding + index * line_height + line_height // 2

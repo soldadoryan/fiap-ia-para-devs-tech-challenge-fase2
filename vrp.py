@@ -29,7 +29,7 @@ from algoritmo_genetico.mutacao import mutate
 from algoritmo_genetico.populacao import generate_random_population
 from algoritmo_genetico.selecao import selecao_por_roleta
 from restricoes.entregas import CRITICO, REGULAR, gerar_entregas, validar_capacidade
-from restricoes.fitness import calcular_fitness_logistico, resumo_da_frota
+from restricoes.fitness import calcular_fitness, resumo_da_frota
 from restricoes.roteirizacao import carga_da_rota, decodificar_rotas, distancia_da_rota
 from restricoes.veiculo import Veiculo, km
 from visualizacao.grafico import draw_plot
@@ -82,9 +82,9 @@ while running:
             running = False
 
     generation = next(generation_counter)
-    screen.fill(config.WHITE)
+    screen.fill(config.BLACK)
 
-    population_fitness = [calcular_fitness_logistico(individual, entregas, FROTA)
+    population_fitness = [calcular_fitness(individual, entregas, FROTA)
                           for individual in population]
     population, population_fitness = sort_population(population, population_fitness)
 
@@ -97,7 +97,7 @@ while running:
     veiculos_em_uso_values.append(sum(1 for rota in rotas if len(rota) > 1))
 
     draw_plot(screen, list(range(len(best_fitness_values))), best_fitness_values,
-              y_label="Fitness - custo (metros equivalentes)",
+              y_label="Fitness - custo",
               size=(config.PLOT_X_OFFSET - 50, config.HEIGHT),
               y2=veiculos_em_uso_values, y2_label="Veiculos em uso")
 

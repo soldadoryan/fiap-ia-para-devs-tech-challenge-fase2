@@ -14,7 +14,7 @@ PLOT_X_OFFSET = 800
 METROS_POR_PIXEL = 1.0
 VELOCIDADE_MEDIA_KMH = 60.0
 
-INSTANCIA = "aleatoria"
+INSTANCIA = "aleatoria" # att48 | aleatoria
 SEMENTE = None
 
 N_CITIES = 30
@@ -43,6 +43,7 @@ FROTA = [
      "aceita_criticos": False, "cor": (200, 0, 200)},
 ]
 
+BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 180, 0)
 ORANGE = (255, 140, 0)

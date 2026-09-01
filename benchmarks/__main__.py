@@ -25,7 +25,7 @@ import time
 import config
 from benchmarks.att48 import carregar, comprimento_otimo
 from restricoes.entregas import REGULAR
-from restricoes.fitness import calcular_fitness_logistico, resumo_da_frota
+from restricoes.fitness import calcular_fitness, resumo_da_frota
 from restricoes.roteirizacao import decodificar_rotas, distancia_da_rota
 from restricoes.veiculo import Veiculo, km
 from algoritmo_genetico.avaliacao import sort_population
@@ -139,7 +139,7 @@ def executar(modo: str = "tsp", geracoes: int = GERACOES_PADRAO,
     melhor_individuo = population[0]
 
     for geracao in range(1, geracoes + 1):
-        fitness = [calcular_fitness_logistico(ind, entregas, frota)
+        fitness = [calcular_fitness(ind, entregas, frota)
                    for ind in population]
         population, fitness = sort_population(population, fitness)
 

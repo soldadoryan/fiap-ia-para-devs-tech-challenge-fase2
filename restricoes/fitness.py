@@ -9,7 +9,7 @@ from restricoes.roteirizacao import (carga_da_rota, decodificar_rotas,
 from restricoes.veiculo import Veiculo, km
 
 
-def calcular_fitness_logistico(individual: List[Cidade], entregas: Dict[Cidade, dict],
+def calcular_fitness(individual: List[Cidade], entregas: Dict[Cidade, dict],
                                veiculos: Sequence[Veiculo]) -> float:
     """
     Custo da solucao: quanto MENOR, melhor. Manter essa convencao e o que faz

@@ -4,8 +4,8 @@ Roteirização da entrega de medicamentos e insumos a partir de um hospital (bas
 resolvida por um algoritmo genético, visualizada em tempo real com Pygame e
 documentada por um relatório em PDF escrito pelo Gemini.
 
-O problema é um **VRP (Vehicle Routing Problem)**: uma frota com veículos únicos 
-sai da base, atende os pontos de entrega e volta. 
+O problema é um **VRP (Vehicle Routing Problem)**: uma frota com veículos únicos
+sai da base, atende os pontos de entrega e volta.
 O algoritmo busca **a menor distância rodada com o menor número de veículos**, respeitando:
 
 - **prioridade da carga** - medicamentos críticos são entregues antes dos
@@ -65,25 +65,26 @@ frota. **Feche a janela ou aperte `Q`** para encerrar: nesse momento o relatóri
 Tudo o que se ajusta está em [config.py](config.py) - nenhum módulo do algoritmo
 precisa ser tocado. Os parâmetros mais úteis:
 
-| Parâmetro                     | O que faz                                                       |
-| ----------------------------- | --------------------------------------------------------------- |
-| `N_CITIES`                    | quantidade de pontos de entrega (o primeiro vira a base)        |
-| `POPULATION_SIZE`             | tamanho da população do algoritmo                                      |
-| `MUTATION_PROBABILITY`        | chance de mutação por filho                                     |
+| Parâmetro                     | O que faz                                                                   |
+| ----------------------------- | --------------------------------------------------------------------------- |
+| `N_CITIES`                    | quantidade de pontos de entrega (o primeiro vira a base)                    |
+| `POPULATION_SIZE`             | tamanho da população do algoritmo                                           |
+| `MUTATION_PROBABILITY`        | chance de mutação por filho                                                 |
 | `ELITISMO`                    | `True`/`False` - se o melhor indivíduo passa intacto para a próxima geração |
-| `PROB_CRITICO`                | fração de entregas classificadas como críticas                  |
-| `DEMANDA_MIN` / `DEMANDA_MAX` | faixa de carga sorteada por ponto                               |
-| `FROTA`                       | a frota inteira: nome, capacidade, autonomia, habilitação e cor |
-| `CUSTO_FIXO_VEICULO`          | quanto custa colocar mais um veículo na rua                     |
-| `INSTANCIA`                   | `"aleatoria"` ou `"att48"` (mapa fixo de benchmark)             |
-| `SEMENTE`                     | fixa o sorteio para reproduzir exatamente a mesma rodada        |
-| `ABRIR_PDF_AO_FINAL`          | abre ou não o PDF automaticamente                               |
+| `PROB_CRITICO`                | fração de entregas classificadas como críticas                              |
+| `DEMANDA_MIN` / `DEMANDA_MAX` | faixa de carga sorteada por ponto                                           |
+| `FROTA`                       | a frota inteira: nome, capacidade, autonomia, habilitação e cor             |
+| `CUSTO_FIXO_VEICULO`          | quanto custa colocar mais um veículo na rua                                 |
+| `INSTANCIA`                   | `"aleatoria"` ou `"att48"` (mapa fixo de benchmark)                         |
+| `SEMENTE`                     | fixa o sorteio para reproduzir exatamente a mesma rodada                    |
+| `ABRIR_PDF_AO_FINAL`          | abre ou não o PDF automaticamente                                           |
 
 ### Testes
 
 ```bash
 pytest -q
 ```
+
 Cada teste está descrito na [seção 10](#10-testes-automatizados).
 
 ```bash
@@ -102,6 +103,7 @@ python -m benchmarks vrp 2000       # a frota completa no mesmo mapa fixo
 ---
 
 ## 2. Bibliotecas usadas
+
 ### pygame
 
 Responsável pela renderização do problema e demonstração em
@@ -141,6 +143,7 @@ O [algoritmo_genetico/](algoritmo_genetico/) atua como um algoritmo genético ge
 
 Podemos tratar um indivíduo como uma lista com todos os pontos do mapa considerado
 como uma das possíveis soluções:
+
 ```python
 [(120, 430), (770, 88), (305, 512), ...]
 ```
@@ -154,7 +157,7 @@ VRP.
 
 O ciclo responsável pela atuação do algoritmo está em [vrp.py](vrp.py) e repete os passos abaixo:
 
-**1. Avaliação** - o indivíduo passa por `calcular_fitness_logistico`, que o
+**1. Avaliação** - o indivíduo passa por `calcular_fitness`, que o
 decodifica em rotas e devolve o custo. Regra de fitness: **menor custo =
 melhor indivíduo**.
 
@@ -177,10 +180,10 @@ peso grande. Os indivíduos ruins mantém uma chance pequena de propósito: é o
 preserva diversidade e evita enviesar o algoritmo já nas primeiras gerações.
 
 **5. Cruzamento (Order Crossover)** -
-[algoritmo_genetico/cruzamento.py](algoritmo_genetico/cruzamento.py). A escolha 
+[algoritmo_genetico/cruzamento.py](algoritmo_genetico/cruzamento.py). A escolha
 do Order Crossover veio do fato de que em um algoritmo de rotas, não podemos apenas
-agregar características dos pais. Desta forma, teríamos os filhos com destinos 
-repetidos ou não cobriríamos todas as localizações necessárias. 
+agregar características dos pais. Desta forma, teríamos os filhos com destinos
+repetidos ou não cobriríamos todas as localizações necessárias.
 
 **Os passos de cruzamento são:**
 
@@ -210,6 +213,7 @@ Consequências práticas:
 
 - os operadores genéticos ficaram intactos, sem nenhum código de reparo;
 - nenhum filho nasce inválido, então não há descarte de indivíduos;
+
 ---
 
 ## 4. Implementação de cada restrição
@@ -283,7 +287,7 @@ esquerda, mapa a direita. Tudo é redesenhado a cada geração.
 
 ### O mapa - [visualizacao/mapa.py](visualizacao/mapa.py)
 
-- **Pontos de entrega** (`draw_cities`): círculos coloridos por prioridade 
+- **Pontos de entrega** (`draw_cities`): círculos coloridos por prioridade
   (laranja para críticas, azul claro para regulares). A base é desenhada em verde.
 - **Rotas** (`draw_paths`): uma `pygame.draw.lines` fechada por veículo, na cor
   definida em `config.FROTA`. Veículos não utilizados não são desenhados.
@@ -374,7 +378,7 @@ criada se não existir) e é aberto no visualizador padrão.
 
 ## 8. Integração com o Gemini
 
-Toda isolada no pacote [gemini/](gemini/). A análise do LLM é dispensável para que 
+Toda isolada no pacote [gemini/](gemini/). A análise do LLM é dispensável para que
 o algoritmo rode. Sendo assim, caso algum obstáculo técnico ou financeiro não permita
 a integração, ainda sim o algoritmo gerará o relatório.
 
@@ -383,7 +387,6 @@ a integração, ainda sim o algoritmo gerará o relatório.
 | `gemini/prompt.md`  | **o prompt em si**, fora do código Python                 |
 | `gemini/prompt.py`  | carrega o `prompt.md` e substitui os marcadores           |
 | `gemini/cliente.py` | chave de API, escolha do SDK, cadeia de modelos e backoff |
-
 
 ### O prompt
 
@@ -465,7 +468,7 @@ Cada termo do custo isolado é conferido no valor exato, com os pesos fixados pe
 | Teste                                                            | O que garante                                                                                                                                                                                                                                                      |
 | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `sem_violacao_o_custo_e_distancia_mais_custo_fixo`               | a fórmula base: distância total + despachados x custo fixo                                                                                                                                                                                                         |
-| `veiculo_ocioso_nao_custa_nada`                                  | o custo fixo é por veículo **despachado**, não por veículo da frota - é o que permite ao algoritmo enxugar a frota                                                                                                                                                        |
+| `veiculo_ocioso_nao_custa_nada`                                  | o custo fixo é por veículo **despachado**, não por veículo da frota - é o que permite ao algoritmo enxugar a frota                                                                                                                                                 |
 | `excesso_de_carga_soma_a_penalidade_exata`                       | 5 unidades acima da capacidade somam exatamente `5 x PENALIDADE_EXCESSO`                                                                                                                                                                                           |
 | `excesso_de_autonomia_soma_a_penalidade_exata`                   | 100 m acima da autonomia somam exatamente `100 x PENALIDADE_AUTONOMIA`                                                                                                                                                                                             |
 | `peso_equilibrio_cobra_a_diferenca_entre_a_maior_e_a_menor_rota` | zerado (padrão) não muda nada; ligado, cobra o desequilíbrio da frota                                                                                                                                                                                              |
@@ -534,7 +537,7 @@ anexo de conferência, que existe justamente para pegar isso.
 | Teste                                                 | O que garante                                                                                                                                            |
 | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `carregar_devolve_as_48_cidades_na_tela`              | 48 pontos únicos, dentro da área do mapa                                                                                                                 |
-| `tour_otimo_e_uma_permutacao_das_cidades`             | a cidade de fechamento duplicada foi removida. Se ficasse, o tour teria 49 pontos e a comparação com o algoritmo seria entre coisas diferentes                  |
+| `tour_otimo_e_uma_permutacao_das_cidades`             | a cidade de fechamento duplicada foi removida. Se ficasse, o tour teria 49 pontos e a comparação com o algoritmo seria entre coisas diferentes           |
 | `instancia_e_reprodutivel`                            | o mesmo mapa e o mesmo ótimo em toda execução - o propósito do benchmark                                                                                 |
 | `comprimento_otimo_e_positivo`                        | a linha de base existe                                                                                                                                   |
 | `frota_e_replicada_ate_caber_a_demanda`               | regressão do erro "Frota subdimensionada": as 48 entregas não cabem na `FROTA` de `config.py`, então o benchmark despacha turnos inteiros da mesma frota |
@@ -587,19 +590,18 @@ O projeto entrega um VRP hospitalar completo resolvido por algoritmo genético,
 com visualização ao vivo e relatório executivo automático. Alguns pontos que
 valem como conclusão técnica:
 
-Utilizando benchmarks para medir a eficiência, podemos concluir que calibrando o 
+Utilizando benchmarks para medir a eficiência, podemos concluir que calibrando o
 algoritmo com pesos relevantes para excessos de carga, limitações de economia e custo
-fixo para adição de novos veículos faz com que o algoritmo tenha resultados agradáveis 
+fixo para adição de novos veículos faz com que o algoritmo tenha resultados agradáveis
 de forma relativamente rápida.
 
 Além disso, identificamos que o elitismo é essencial para esse problema e que o order
 crossover pode ser um método de cruzamento eficiente para garantir a herança das características do pai nos filhos de forma que não deixemos pra trás nenhum ponto de entrega.
 
-A parametrização sempre vai ser relativa a qual objetivo queremos alcançar com o algoritmo 
-genético. A pergunta que fica é: Qual problema queremos resolver? 
+A parametrização sempre vai ser relativa a qual objetivo queremos alcançar com o algoritmo
+genético. A pergunta que fica é: Qual problema queremos resolver?
 
 - **Menor rota com menor quantidade de veículos?** Precisaremos aumentar o custo fixo da adição de veículo.
 - **Menor rota e menor tempo?** Precisaremos reduzir o custo fixo dos veículos de forma que consigamos balancear o custo da distância da rota com a penalidade de quantidade de veículos;
 - **Menor tempo?** Reduzir drasticamente o custo fixo de veículos;
 - **Garantir entregas em autonomia e capacidade de carga?** Aumentar drasticamente as penalidades por excesso e por distância de rota sobressalente.
-

@@ -116,7 +116,7 @@ if __name__ == "__main__":
     import config
     from restricoes.entregas import (REGULAR, demanda_total, gerar_entregas,
                                   validar_capacidade)
-    from restricoes.fitness import calcular_fitness_logistico, resumo_da_frota
+    from restricoes.fitness import calcular_fitness, resumo_da_frota
 
     frota = [Veiculo.da_config(d) for d in config.FROTA]
     cidades = [(random.randint(0, 800), random.randint(0, 800))
@@ -156,4 +156,4 @@ if __name__ == "__main__":
     print(f"OK - demanda total {demanda_total(cidades, dados)} "
           f"(critica {demanda_total(cidades, dados, CRITICO)})")
     print(resumo_da_frota(rotas, dados, frota))
-    print(f"custo = {calcular_fitness_logistico(individuo, dados, frota):.2f}")
+    print(f"custo = {calcular_fitness(individuo, dados, frota):.2f}")

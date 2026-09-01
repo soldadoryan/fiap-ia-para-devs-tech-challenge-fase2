@@ -28,10 +28,16 @@ def draw_plot(screen: pygame.Surface, x: list, y: list, x_label: str = 'Generati
     """
     dpi = 100
     fig, ax = plt.subplots(figsize=(size[0] / dpi, size[1] / dpi), dpi=dpi)
+    fig.patch.set_facecolor("black")
+    ax.set_facecolor("black")
+
     linha_fitness, = ax.plot(x, y, color="tab:blue", label=y_label)
     ax.set_ylabel(y_label, color="tab:blue")
-    ax.set_xlabel(x_label)
+    ax.set_xlabel(x_label, color="white")
     ax.tick_params(axis="y", labelcolor="tab:blue")
+    ax.tick_params(axis="x", colors="white")
+    for spine in ax.spines.values():
+        spine.set_color("white")
 
     if y2 is not None:
         ax2 = ax.twinx()
@@ -39,10 +45,15 @@ def draw_plot(screen: pygame.Surface, x: list, y: list, x_label: str = 'Generati
                                 linewidth=1.5, label=y2_label)
         ax2.set_ylabel(y2_label, color="tab:orange")
         ax2.tick_params(axis="y", labelcolor="tab:orange")
+        for spine in ax2.spines.values():
+            spine.set_color("white")
         if y2:
             ax2.set_ylim(0, max(y2) + 1)
             ax2.set_yticks(range(0, int(max(y2)) + 2))
-        ax.legend(handles=[linha_fitness, linha_frota], loc="upper right", fontsize=8)
+        legenda = ax.legend(handles=[linha_fitness, linha_frota], loc="upper right",
+                            fontsize=8, facecolor="black", edgecolor="white")
+        for texto in legenda.get_texts():
+            texto.set_color("white")
 
     plt.tight_layout()
 
